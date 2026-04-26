@@ -2,6 +2,7 @@ const UserModel = require('../models/user.model.js')
 const jwt = require('jsonwebtoken')
 const dotenv = require('dotenv')
 dotenv.config({ path: './.env' })
+const emailService = require('../services/email.service.js')
 
 async function userRegister(req, res) {
     const { email, password, name } = req.body
@@ -38,6 +39,8 @@ async function userRegister(req, res) {
                 name: user.name
             }
         })
+
+        await emailService.SendRegistrationEmail(user.email, user.name) // yahn pr humne registration ke baad email bhejne ke liye email service ka use kiya hai, jisme user ka email aur name pass kiya hai taki email me user ka naam bhi include ho sake
 }
 
 async function userLogin(req, res) {
